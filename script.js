@@ -1,10 +1,22 @@
 let cards = [];
 
 /* ---------------- STATS ---------------- */
+/* ---------------- STATS ---------------- */
 let stats = JSON.parse(localStorage.getItem("packStats")) || {
   packsOpened: 0,
   rarities: {}
 };
+
+const rarityOrder = [
+  "Common",
+  "Uncommon",
+  "Rare",
+  "Double Rare",
+  "Illustration Rare",
+  "Ultra Rare",
+  "Special Illustration Rare",
+  "Hyper Rare"
+];
 
 function saveStats() {
   localStorage.setItem("packStats", JSON.stringify(stats));
@@ -14,9 +26,11 @@ function updateStatsDisplay() {
   const statsDiv = document.getElementById("stats");
   let html = `<h3>Packs Opened: ${stats.packsOpened}</h3><ul>`;
 
-  for (let r in stats.rarities) {
-    html += `<li>${r}: ${stats.rarities[r]}</li>`;
-  }
+  // Loop through rarities in fixed order
+  rarityOrder.forEach(r => {
+    const count = stats.rarities[r] || 0; // show 0 if not present
+    html += `<li>${r}: ${count}</li>`;
+  });
 
   html += "</ul>";
   statsDiv.innerHTML = html;
