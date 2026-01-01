@@ -11,15 +11,23 @@
 
   <div id="loading">Loading set...</div>
 
-  <button id="openPack" disabled>Open Pack</button>
-  <button id="resetData">Reset Progress</button>
+  <div id="controls">
+    <button id="openPack" disabled>Open Pack</button>
+    <button id="resetData">Reset Progress</button>
+  </div>
 
-  <div id="pack"></div>
-  
   <div id="stats"></div>
 
-  <h2>Your Collection</h2>
-  <div id="collection"></div>
+  <!-- Pack div ABOVE collection -->
+  <div id="pack-container">
+    <h2>Opened Pack</h2>
+    <div id="pack"></div>
+  </div>
+
+  <div id="collection-container">
+    <h2>Your Collection</h2>
+    <div id="collection"></div>
+  </div>
 
   <script src="script.js"></script>
 </body>
