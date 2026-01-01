@@ -2,7 +2,7 @@ let cards = [];
 
 fetch("sets/Z-Genesis_Melemele.json")
   .then(res => res.json())
-  .then(data => cards = data);
+  .then(json => cards = json.data);
 
 function randomFrom(array) {
   return array[Math.floor(Math.random() * array.length)];
