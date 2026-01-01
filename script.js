@@ -57,12 +57,17 @@ function openPack() {
     { rarity: "Ultra Rare", weight: 1 }
   ]))));
 
-  pulls.forEach(card => {
-    const div = document.createElement("div");
-    div.className = "card";
-    div.innerHTML = `<img src="${card.image}" alt="${card.name}">`;
-    pack.appendChild(div);
-  });
+  pulls.forEach((card, index) => {
+  const div = document.createElement("div");
+  div.className = "card";
+  div.innerHTML = `<img src="${card.image}" alt="${card.name}">`;
+  pack.appendChild(div);
+
+  setTimeout(() => {
+    div.classList.add("show");
+  }, index * 350);
+});
+
 }
 
 document.getElementById("openPack").onclick = openPack;
