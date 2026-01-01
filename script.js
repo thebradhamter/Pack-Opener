@@ -122,8 +122,6 @@ function openPack() {
   pulls.forEach(card => {
     stats.rarities[card.rarity] = (stats.rarities[card.rarity] || 0) + 1;
   });
-  saveStats();
-  updateStatsDisplay();
 
   // Collection
   const packCounts = {};
@@ -137,10 +135,11 @@ function openPack() {
     }
     collection[name].count += packCounts[name];
   }
+
   saveCollection();
   renderCollection();
 
-  // Render with animation
+  // Render pack WITH animation first
   pulls.forEach((card, index) => {
     const div = document.createElement("div");
     div.className = "card";
@@ -151,7 +150,12 @@ function openPack() {
       div.classList.add("show");
     }, index * 350);
   });
+
+  // **Update stats AFTER pack is rendered**
+  saveStats();
+  updateStatsDisplay();
 }
+
 
 /* ---------------- RESET ---------------- */
 document.getElementById("resetData").onclick = () => {
