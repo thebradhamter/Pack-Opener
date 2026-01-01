@@ -1,7 +1,6 @@
 let cards = [];
 
 /* ---------------- STATS ---------------- */
-
 let stats = JSON.parse(localStorage.getItem("packStats")) || {
   packsOpened: 0,
   rarities: {}
@@ -24,7 +23,6 @@ function updateStatsDisplay() {
 }
 
 /* ---------------- COLLECTION ---------------- */
-
 let collection = JSON.parse(localStorage.getItem("collection")) || {};
 
 function saveCollection() {
@@ -47,13 +45,11 @@ function renderCollection() {
 }
 
 /* ---------------- LOAD SET ---------------- */
-
 fetch("sets/Z-Genesis_Melemele.json")
   .then(res => res.json())
   .then(json => cards = json.data);
 
 /* ---------------- HELPERS ---------------- */
-
 function randomFrom(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
@@ -73,7 +69,6 @@ function weightedRoll(table) {
 }
 
 /* ---------------- OPEN PACK ---------------- */
-
 function openPack() {
   const pack = document.getElementById("pack");
   pack.innerHTML = "";
@@ -116,8 +111,7 @@ function openPack() {
   /* ---- STATS (ONCE) ---- */
   stats.packsOpened++;
   pulls.forEach(card => {
-    stats.rarities[card.rarity] =
-      (stats.rarities[card.rarity] || 0) + 1;
+    stats.rarities[card.rarity] = (stats.rarities[card.rarity] || 0) + 1;
   });
   saveStats();
   updateStatsDisplay();
@@ -153,7 +147,6 @@ function openPack() {
 }
 
 /* ---------------- RESET ---------------- */
-
 document.getElementById("resetData").onclick = () => {
   if (!confirm("This will erase all packs opened and your collection. Are you sure?")) return;
 
@@ -169,5 +162,6 @@ document.getElementById("resetData").onclick = () => {
 
 document.getElementById("openPack").onclick = openPack;
 
+/* ---- INITIAL RENDER ---- */
 updateStatsDisplay();
 renderCollection();
