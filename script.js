@@ -49,11 +49,7 @@ fetch("sets/Z-Genesis_Melemele.json")
   .then(res => res.json())
   .then(json => {
     cards = json.data;
-
-    // Enable the Open Pack button now that JSON has loaded
     document.getElementById("openPack").disabled = false;
-
-    // Hide loading text
     document.getElementById("loading").style.display = "none";
   });
 
@@ -79,12 +75,12 @@ function weightedRoll(table) {
 /* ---------------- OPEN PACK ---------------- */
 function openPack() {
   if (!cards.length) {
-    alert("Set not loaded yet. Please wait a moment.");
+    alert("Set not loaded yet. Please wait.");
     return;
   }
 
   const pack = document.getElementById("pack");
-  pack.innerHTML = "";
+  pack.innerHTML = ""; // clear previous pack
 
   const pulls = [];
 
@@ -121,7 +117,7 @@ function openPack() {
     { rarity: "Ultra Rare", weight: 1 }
   ]))));
 
-  /* ---- STATS (ONCE) ---- */
+  // Stats
   stats.packsOpened++;
   pulls.forEach(card => {
     stats.rarities[card.rarity] = (stats.rarities[card.rarity] || 0) + 1;
@@ -129,12 +125,11 @@ function openPack() {
   saveStats();
   updateStatsDisplay();
 
-  /* ---- COLLECTION (ONCE) ---- */
+  // Collection
   const packCounts = {};
   pulls.forEach(card => {
     packCounts[card.name] = (packCounts[card.name] || 0) + 1;
   });
-
   for (let name in packCounts) {
     const card = pulls.find(c => c.name === name);
     if (!collection[name]) {
@@ -142,11 +137,10 @@ function openPack() {
     }
     collection[name].count += packCounts[name];
   }
-
   saveCollection();
   renderCollection();
 
-  /* ---- RENDER + ANIMATION ---- */
+  // Render with animation
   pulls.forEach((card, index) => {
     const div = document.createElement("div");
     div.className = "card";
