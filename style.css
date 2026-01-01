@@ -50,3 +50,10 @@ button {
   font-size: 18px;
   font-weight: bold;
 }
+
+/* Stats style */
+#stats {
+  margin-top: 15px;
+  text-align: left;
+  display: inline-block;
+}
