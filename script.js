@@ -49,6 +49,15 @@ function openPack() {
 
   const pulls = [];
 
+  stats.packsOpened++;
+
+  pulls.forEach(card => {
+  stats.rarities[card.rarity] = (stats.rarities[card.rarity] || 0) + 1;
+});
+
+saveStats();
+updateStatsDisplay();
+
   for (let i = 0; i < 7; i++) {
     pulls.push(randomFrom(getByRarity(weightedRoll([
       { rarity: "Common", weight: 4 },
