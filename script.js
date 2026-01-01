@@ -1,7 +1,6 @@
 let cards = [];
 
 /* ---------------- STATS ---------------- */
-/* ---------------- STATS ---------------- */
 let stats = JSON.parse(localStorage.getItem("packStats")) || {
   packsOpened: 0,
   rarities: {}
