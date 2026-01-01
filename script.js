@@ -1,5 +1,26 @@
 let cards = [];
 
+let stats = JSON.parse(localStorage.getItem("packStats")) || {
+  packsOpened: 0,
+  rarities: {}
+};
+
+function saveStats() {
+  localStorage.setItem("packStats", JSON.stringify(stats));
+}
+
+function updateStatsDisplay() {
+  const statsDiv = document.getElementById("stats");
+  let html = `<h3>Packs Opened: ${stats.packsOpened}</h3><ul>`;
+
+  for (let r in stats.rarities) {
+    html += `<li>${r}: ${stats.rarities[r]}</li>`;
+  }
+
+  html += "</ul>";
+  statsDiv.innerHTML = html;
+}
+
 fetch("sets/Z-Genesis_Melemele.json")
   .then(res => res.json())
   .then(json => cards = json.data);
