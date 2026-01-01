@@ -50,7 +50,8 @@ function renderCollection() {
 
 fetch("sets/Z-Genesis_Melemele.json")
   .then(res => res.json())
-  .then(json => cards = json.data);
+  .then(json => cards = json.data)
+  .catch(err => console.error("Failed to load JSON:", err));
 
 /* ---------------- HELPERS ---------------- */
 
@@ -72,7 +73,14 @@ function weightedRoll(table) {
   }
 }
 
+/* ---------------- OPEN PACK ---------------- */
+
 function openPack() {
+  if (!cards || cards.length === 0) {
+    alert("Cards not loaded yet. Please wait a moment and try again.");
+    return;
+  }
+
   const pack = document.getElementById("pack");
   pack.innerHTML = "";
 
@@ -112,7 +120,7 @@ function openPack() {
     { rarity: "Ultra Rare", weight: 1 }
   ]))));
 
-  // ----- Update Stats -----
+  /* ---- STATS (ONCE) ---- */
   stats.packsOpened++;
   pulls.forEach(card => {
     stats.rarities[card.rarity] = (stats.rarities[card.rarity] || 0) + 1;
@@ -120,21 +128,24 @@ function openPack() {
   saveStats();
   updateStatsDisplay();
 
-  // ----- Update Collection -----
+  /* ---- COLLECTION (ONCE) ---- */
+  const packCounts = {};
   pulls.forEach(card => {
-    if (!collection[card.name]) {
-      // New card
-      collection[card.name] = { ...card, count: 1 };
-    } else {
-      // Existing card, increment count
-      collection[card.name].count += 1;
-    }
+    packCounts[card.name] = (packCounts[card.name] || 0) + 1;
   });
+
+  for (let name in packCounts) {
+    const card = pulls.find(c => c.name === name);
+    if (!collection[name]) {
+      collection[name] = { ...card, count: 0 };
+    }
+    collection[name].count += packCounts[name];
+  }
 
   saveCollection();
   renderCollection();
 
-  // ----- Render Pack with Animation -----
+  /* ---- RENDER PACK WITH ANIMATION ---- */
   pulls.forEach((card, index) => {
     const div = document.createElement("div");
     div.className = "card";
@@ -146,7 +157,6 @@ function openPack() {
     }, index * 350);
   });
 }
-
 
 /* ---------------- RESET ---------------- */
 
@@ -163,7 +173,7 @@ document.getElementById("resetData").onclick = () => {
   renderCollection();
 };
 
+/* ---------------- INITIALIZE ---------------- */
 document.getElementById("openPack").onclick = openPack;
-
 updateStatsDisplay();
 renderCollection();
