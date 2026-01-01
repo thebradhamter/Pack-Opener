@@ -21,6 +21,27 @@ function updateStatsDisplay() {
   statsDiv.innerHTML = html;
 }
 
+let collection = JSON.parse(localStorage.getItem("collection")) || {};
+
+function saveCollection() {
+  localStorage.setItem("collection", JSON.stringify(collection));
+}
+
+function renderCollection() {
+  const colDiv = document.getElementById("collection");
+  colDiv.innerHTML = "";
+
+  Object.values(collection).forEach(card => {
+    const div = document.createElement("div");
+    div.className = "card show";
+    div.innerHTML = `
+      <img src="${card.image}">
+      <div>${card.name} ×${card.count}</div>
+    `;
+    colDiv.appendChild(div);
+  });
+}
+
 fetch("sets/Z-Genesis_Melemele.json")
   .then(res => res.json())
   .then(json => cards = json.data);
@@ -93,6 +114,16 @@ updateStatsDisplay();
   div.innerHTML = `<img src="${card.image}" alt="${card.name}">`;
   pack.appendChild(div);
 
+  pulls.forEach(card => {
+  if (!collection[card.name]) {
+    collection[card.name] = { ...card, count: 0 };
+  }
+  collection[card.name].count++;
+});
+
+saveCollection();
+renderCollection();
+    
   setTimeout(() => {
     div.classList.add("show");
   }, index * 350);
